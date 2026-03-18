@@ -12,13 +12,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90585abb503d49249aa39520b8eb4f94, type: 3}
   m_Name: Level1
   m_EditorClassIdentifier: 
-  levelSize: {x: 10, y: 8}
-  playerStartPosition: {x: -3, y: 1}
-  exitPosition: {x: 8, y: 6}
-  wallPositions:
-  - {x: -4, y: 0}
-  - {x: -4, y: 1}
-  - {x: -4, y: 2}
-  - {x: -4, y: 3}
-  - {x: -4, y: 4}
-  - {x: -3, y: 0}
+  levelSize: {x: 12, y: 8}
+  playerStartPosition: {x: -3, y: 2}
+  exitPosition: {x: 10, y: 2}
+  walls:
+  - position: {x: 6, y: -1}
+    type: 1
+  - position: {x: -6, y: 5}
+    type: 2
+  - position: {x: 18, y: 5}
+    type: 2
+  - position: {x: 6, y: 10}
+    type: 1
+  - position: {x: 6, y: -2}
+    type: 1
+  - position: {x: 6, y: 0}
+    type: 1
+  - position: {x: 6, y: 1}
+    type: 1
+  - position: {x: -5, y: 5}
+    type: 2
+  - position: {x: 17, y: 5}
+    type: 2
+  - position: {x: 6, y: 9}
+    type: 1
+  - position: {x: 2, y: 2}
+    type: 0
+  - position: {x: 2, y: 3}
+    type: 0

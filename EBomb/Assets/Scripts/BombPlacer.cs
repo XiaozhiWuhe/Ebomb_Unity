@@ -1,22 +1,22 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class BombPlacer : MonoBehaviour
 {
-    public GameObject bombPrefab;          // Õ¨µ¯Ô¤ÖÆÌå
-    public Transform pointer;              // Ö¸Õë¶ÔÏó
-    public LayerMask wallLayer;            // Ç½Ìå²ã
-    public LayerMask bombLayer;            // Õ¨µ¯²ã
-    public Rigidbody2D playerRb;           // Íæ¼Ò Rigidbody2D
+    public GameObject bombPrefab;          // ç‚¸å¼¹é¢„åˆ¶ä½“
+    public Transform pointer;              // æŒ‡é’ˆå¯¹è±¡
+    public LayerMask wallLayer;            // å¢™ä½“å±‚
+    public LayerMask bombLayer;            // ç‚¸å¼¹å±‚
+    public Rigidbody2D playerRb;           // ç©å®¶ Rigidbody2D
     private PointerController pointerController;
 
-    public float holdThreshold = 0.2f;     // ³¤°´ãĞÖµ
-    public float zoomFactor = 1.5f;        // ¾µÍ··Å´ó±¶Êı
-    public Color previewColor = new Color(1f, 1f, 1f, 0.5f); // Ô¤ÀÀÑÕÉ«
+    public float holdThreshold = 0.2f;     // é•¿æŒ‰é˜ˆå€¼
+    public float zoomFactor = 1.5f;        // é•œå¤´æ”¾å¤§å€æ•°
+    public Color previewColor = new Color(1f, 1f, 1f, 0.5f); // é¢„è§ˆé¢œè‰²
 
     private float holdTime = 0f;
     private bool isInExplodeMode = false;
 
-    // µ±Íæ¼ÒÒÆ¶¯Ê±½ûÖ¹±¾´Î°´¼üĞĞÎª
+    // å½“ç©å®¶ç§»åŠ¨æ—¶ç¦æ­¢æœ¬æ¬¡æŒ‰é”®è¡Œä¸º
     private bool cancelCurrentPress = false;
 
     private GameObject bombPreview;
@@ -27,12 +27,12 @@ public class BombPlacer : MonoBehaviour
     {
         cameraController = Camera.main.GetComponent<CameraController>();
 
-        // »ñÈ¡Ö¸Õë¿ØÖÆÆ÷
+        // è·å–æŒ‡é’ˆæ§åˆ¶å™¨
         pointerController = pointer.GetComponent<PointerController>();
 
         if (pointerController == null)
         {
-            Debug.LogError("PointerController Î´ÕÒµ½£¬Çë¼ì²é Pointer ¶ÔÏó");
+            Debug.LogError("PointerController æœªæ‰¾åˆ°ï¼Œè¯·æ£€æŸ¥ Pointer å¯¹è±¡");
         }
     }
 
@@ -40,21 +40,21 @@ public class BombPlacer : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Space))
         {
-            // Èç¹û±¾´Î°´¼üÒÑ±»È¡Ïû£¬ÔòÖ±½ÓºöÂÔ
+            // å¦‚æœæœ¬æ¬¡æŒ‰é”®å·²è¢«å–æ¶ˆï¼Œåˆ™ç›´æ¥å¿½ç•¥
             if (cancelCurrentPress)
                 return;
 
             holdTime += Time.unscaledDeltaTime;
 
-            // ³¤°´¼ì²â
+            // é•¿æŒ‰æ£€æµ‹
             if (!isInExplodeMode && holdTime > holdThreshold)
             {
-                // ÔÚ½øÈëË²±¬Ä£Ê½Ç°¼ì²éÍæ¼ÒËÙ¶È
+                // åœ¨è¿›å…¥ç¬çˆ†æ¨¡å¼å‰æ£€æŸ¥ç©å®¶é€Ÿåº¦
                 if (playerRb != null && playerRb.velocity.magnitude > 0.01f)
                 {
-                    Debug.Log("Íæ¼ÒÕıÔÚÒÆ¶¯£¬ÎŞ·¨½øÈëË²±¬Ä£Ê½");
+                    Debug.Log("ç©å®¶æ­£åœ¨ç§»åŠ¨ï¼Œæ— æ³•è¿›å…¥ç¬çˆ†æ¨¡å¼");
 
-                    // È¡Ïû±¾´Î°´¼ü
+                    // å–æ¶ˆæœ¬æ¬¡æŒ‰é”®
                     cancelCurrentPress = true;
                     holdTime = 0f;
                     return;
@@ -66,7 +66,7 @@ public class BombPlacer : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            // Èç¹û±¾´Î°´¼ü±»È¡Ïû£¬ÖØÖÃ×´Ì¬²¢ÍË³ö
+            // å¦‚æœæœ¬æ¬¡æŒ‰é”®è¢«å–æ¶ˆï¼Œé‡ç½®çŠ¶æ€å¹¶é€€å‡º
             if (cancelCurrentPress)
             {
                 cancelCurrentPress = false;
@@ -88,10 +88,16 @@ public class BombPlacer : MonoBehaviour
     }
 
     // =============================
-    // ½øÈëË²±¬Ä£Ê½
+    // è¿›å…¥ç¬çˆ†æ¨¡å¼
     // =============================
     void EnterExplodeMode()
     {
+        if (!BombManager.Instance.CanPlaceBomb())
+        {
+            Debug.Log("ç‚¸å¼¹å·²æ»¡ï¼Œæ— æ³•è¿›å…¥ç¬çˆ†æ¨¡å¼");
+            return;
+        }
+
         isInExplodeMode = true;
 
         Time.timeScale = 0f;
@@ -104,7 +110,7 @@ public class BombPlacer : MonoBehaviour
         Vector3 dir = new Vector3(gridDir.x, gridDir.y, 0);
         Vector3 targetPos = playerPos + dir * GridSystem.Instance.gridSize;
 
-        // ¼ì²éÄ¿±êÊÇ·ñÓĞÇ½
+        // æ£€æŸ¥ç›®æ ‡æ˜¯å¦æœ‰å¢™
         if (!Physics2D.OverlapPoint(targetPos, wallLayer))
         {
             bombPreview = Instantiate(bombPrefab, targetPos, Quaternion.identity);
@@ -116,7 +122,7 @@ public class BombPlacer : MonoBehaviour
             if (Physics2D.OverlapPoint(pushPos, wallLayer) ||
                 Physics2D.OverlapPoint(pushPos, bombLayer))
             {
-                Debug.Log("·´·½Ïò±»×èµ²£¬ÎŞ·¨Ë²±¬");
+                Debug.Log("åæ–¹å‘è¢«é˜»æŒ¡ï¼Œæ— æ³•ç¬çˆ†");
                 ExitExplodeMode();
                 return;
             }
@@ -126,30 +132,32 @@ public class BombPlacer : MonoBehaviour
             bombPreview = Instantiate(bombPrefab, playerPos, Quaternion.identity);
         }
 
-        // °ëÍ¸Ã÷Ô¤ÀÀ
+        // åŠé€æ˜é¢„è§ˆ
         SpriteRenderer sr = bombPreview.GetComponent<SpriteRenderer>();
         if (sr != null)
             sr.color = previewColor;
 
-        // ½ûÓÃBombÂß¼­
+        // ç¦ç”¨Bombé€»è¾‘
         Bomb bomb = bombPreview.GetComponent<Bomb>();
         if (bomb != null)
             bomb.enabled = false;
     }
 
     // =============================
-    // Ö´ĞĞË²±¬
+    // æ‰§è¡Œç¬çˆ†
     // =============================
     void ExecuteInstantExplode()
     {
         if (!BombManager.Instance.CanPlaceBomb())
         {
-            Debug.Log("Õ¨µ¯ÊıÁ¿ÒÑÂú");
+            Debug.Log("ç‚¸å¼¹æ•°é‡å·²æ»¡");
             ExitExplodeMode();
             return;
         }
 
         Vector3 spawnPos = bombPreview.transform.position;
+
+        BombManager.Instance.IncreaseBombCount();
 
         GameObject bomb = Instantiate(bombPrefab, spawnPos, Quaternion.identity);
 
@@ -161,7 +169,7 @@ public class BombPlacer : MonoBehaviour
     }
 
     // =============================
-    // ÍË³öË²±¬Ä£Ê½
+    // é€€å‡ºç¬çˆ†æ¨¡å¼
     // =============================
     void ExitExplodeMode()
     {
@@ -177,19 +185,19 @@ public class BombPlacer : MonoBehaviour
     }
 
     // =============================
-    // ÆÕÍ¨Õ¨µ¯·ÅÖÃ
+    // æ™®é€šç‚¸å¼¹æ”¾ç½®
     // =============================
     void PlaceBomb()
     {
         if (playerRb != null && playerRb.velocity.magnitude > 0.01f)
         {
-            Debug.Log("Íæ¼ÒÕıÔÚÒÆ¶¯£¬ÎŞ·¨·ÅÖÃÕ¨µ¯");
+            Debug.Log("ç©å®¶æ­£åœ¨ç§»åŠ¨ï¼Œæ— æ³•æ”¾ç½®ç‚¸å¼¹");
             return;
         }
 
         if (!BombManager.Instance.CanPlaceBomb())
         {
-            Debug.Log("Õ¨µ¯ÊıÁ¿ÒÑÂú");
+            Debug.Log("ç‚¸å¼¹æ•°é‡å·²æ»¡");
             return;
         }
 
@@ -200,11 +208,11 @@ public class BombPlacer : MonoBehaviour
 
         if (Physics2D.OverlapPoint(spawnPos, bombLayer))
         {
-            Debug.Log("¸ÃÎ»ÖÃÒÑÓĞÕ¨µ¯");
+            Debug.Log("è¯¥ä½ç½®å·²æœ‰ç‚¸å¼¹");
             return;
         }
 
-        // ¼ì²éÇ½
+        // æ£€æŸ¥å¢™
         if (Physics2D.OverlapPoint(spawnPos, wallLayer))
         {
             Vector3 oldPos = transform.position;
@@ -213,7 +221,7 @@ public class BombPlacer : MonoBehaviour
             if (Physics2D.OverlapPoint(pushPos, wallLayer) ||
                 Physics2D.OverlapPoint(pushPos, bombLayer))
             {
-                Debug.Log("ÎŞ·¨ÍÆ¿ªÍæ¼Ò");
+                Debug.Log("æ— æ³•æ¨å¼€ç©å®¶");
                 return;
             }
 

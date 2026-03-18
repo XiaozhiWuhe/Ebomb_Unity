@@ -1,10 +1,13 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelLoader : MonoBehaviour
 {
     public LevelData[] levels;
 
     public GameObject wallPrefab;
+    public GameObject wallPrefabA;  // 新墙1
+    public GameObject wallPrefabB;  // 新墙2
     public GameObject exitPrefab;
 
     public Transform levelParent;
@@ -27,7 +30,11 @@ public class LevelLoader : MonoBehaviour
 
         if (currentLevelIndex >= levels.Length)
         {
-            Debug.Log("游戏完成！");
+            Debug.Log("游戏完成！返回主菜单");
+
+            // 加载主菜单场景
+            SceneManager.LoadScene("MainMenuScene");
+
             return;
         }
 
@@ -52,12 +59,14 @@ public class LevelLoader : MonoBehaviour
         );
 
         // ===== 生成墙体 =====
-        foreach (Vector2Int wallPos in level.wallPositions)
+        foreach (var wall in level.walls)
         {
-            Vector3 worldPos = new Vector3(wallPos.x, wallPos.y, 0);
+            Vector3 worldPos = new Vector3(wall.position.x, wall.position.y, 0);
+
+            GameObject prefab = GetWallPrefab(wall.type);
 
             Instantiate(
-                wallPrefab,
+                prefab,
                 worldPos,
                 Quaternion.identity,
                 levelParent
@@ -86,6 +95,24 @@ public class LevelLoader : MonoBehaviour
         foreach (Transform child in levelParent)
         {
             Destroy(child.gameObject);
+        }
+    }
+
+    GameObject GetWallPrefab(WallType type)
+    {
+        switch (type)
+        {
+            case WallType.Normal:
+                return wallPrefab;
+
+            case WallType.TypeA:
+                return wallPrefabA;
+
+            case WallType.TypeB:
+                return wallPrefabB;
+
+            default:
+                return wallPrefab;
         }
     }
 }

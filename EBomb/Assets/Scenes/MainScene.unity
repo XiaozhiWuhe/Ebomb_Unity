@@ -242,7 +242,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levels:
   - {fileID: 11400000, guid: 12b8cec7d0a5e3b4c8e0a7c15a0783d2, type: 2}
+  - {fileID: 11400000, guid: eba7b1ad44968a14d9695a1f00ccb256, type: 2}
   wallPrefab: {fileID: 5791014425392515777, guid: 5cabed50233842143a1aa95bcc993263, type: 3}
+  wallPrefabA: {fileID: 6772519577417838969, guid: f7e69ed7fb39a794f840496124011249, type: 3}
+  wallPrefabB: {fileID: 3953900418976191312, guid: 13722ba4986125149b620bfd61bb85d5, type: 3}
   exitPrefab: {fileID: 8761898871157456050, guid: eea7670b340330247bdf4653f9a790e7, type: 3}
   levelParent: {fileID: 892008055}
   player: {fileID: 1558025445}
@@ -517,7 +520,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.76729554, g: 0.31608713, b: 0.6699726, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -640,7 +643,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: bf748fc660a3a384fb288a569f1210d1, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.01886791, g: 0.017603276, b: 0.017503249, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
